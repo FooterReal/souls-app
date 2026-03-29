@@ -5,19 +5,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services
-    .AddDbContextPool<SoulsDbContext>(options => options.UseNpgsql(connectionString))
-    .AddOpenApi()
-    .AddOpenApiDocument();
+builder.Services.AddControllers();
+builder.Services.AddOpenApi().AddOpenApiDocument();
+builder.Services.AddDbContextPool<SoulsDbContext>(options => options.UseNpgsql(connectionString));
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseOpenApi();
+    app.MapOpenApi();
     app.UseSwaggerUi();
 }
 
-app.MapGet("/", () => "Hello World!");
+app.UseHttpsRedirection();
+
+app.MapControllers();
 
 app.Run();
