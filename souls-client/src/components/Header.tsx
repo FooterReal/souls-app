@@ -21,7 +21,7 @@ export function Header() {
 
                 <nav className="flex items-center gap-3">
                     <Link
-                        to="/"
+                        to="/character-list"
                         activeOptions={{ exact: true }}
                         activeProps={{
                             className:
