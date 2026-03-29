@@ -3,7 +3,12 @@ import { useAllSoulsQuery } from "./queries/soulsQueries"
 
 const backendUrl = 'https://localhost:7180/api'
 
-const client = {
+type ApiClient = {
+  queries: Record<string, (...args: any[]) => any>
+  mutations: Record<string, (...args: any[]) => any>
+}
+
+const client: ApiClient = {
     queries: {
         useAllSoulsQuery
     },
