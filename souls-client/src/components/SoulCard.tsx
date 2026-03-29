@@ -42,7 +42,7 @@ export function SoulCard({ id, name, level, onDelete, isDeleting = false }: Prop
                     className="inline-flex shrink-0 items-center gap-2 rounded-full border border-red-400/20 bg-red-500/10 px-4 py-2 text-sm font-semibold text-red-100 transition hover:border-red-300/35 hover:bg-red-500/15 disabled:cursor-not-allowed disabled:border-white/10 disabled:bg-white/5 disabled:text-zinc-500"
                 >
                     <Trash2 className="h-4 w-4" />
-                    {isDeleting ? 'Deleting...' : 'Delete'}
+                    {isDeleting ? 'Deleting...' : ''}
                 </button>
             </div>
         </article>

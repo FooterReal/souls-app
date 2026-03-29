@@ -1,14 +1,12 @@
-type Props = {
+type Props<TData> = {
     isPending: boolean,
     isError: boolean,
-    data: any,
+    data: TData[] | undefined,
     error: Error | null,
-    children: React.ReactNode | null | undefined
+    children: (data: TData[]) => React.ReactNode
 }
 
-export function ErrorHandle(
-    { isPending, isError, data, error, children } : Props
-) {
+export function ErrorHandle<TData>({ isPending, isError, data, error, children }: Props<TData>) {
     if (isPending) {
         return <div>Fetching...</div>
     }
@@ -17,13 +15,9 @@ export function ErrorHandle(
         return <div>Error: {error?.message}</div>
     }
 
-    if (data.length === 0) {
+    if (!data || data.length === 0) {
         return <div>No elements found...</div>
     }
 
-    if (children === null || children === undefined) {
-        return <></>
-    }
-
-    return children
+    return <>{children(data)}</>
 }

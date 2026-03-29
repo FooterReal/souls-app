@@ -34,6 +34,21 @@ public class SoulsController : ControllerBase
             .ToListAsync();
     }
 
+    [HttpPut]
+    public async Task<ActionResult<int>> CreateSoul()
+    {
+        var soul = new Soul
+        {
+            Name = "New Soul",
+            Level = 1
+        };
+
+        _context.Souls.Add(soul);
+        await _context.SaveChangesAsync();
+
+        return soul.Id;
+    }
+
     /*
     // GET: api/Souls/5
     [HttpGet("{id}")]

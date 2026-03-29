@@ -1,4 +1,5 @@
-import { useSliceQuery } from "../client";
+import { useQuery } from "@tanstack/react-query";
+import { backendUrl } from "../config";
 
 export type Soul = {
     id: number,
@@ -6,9 +7,15 @@ export type Soul = {
     level: number,
 }
 
-export const useAllSoulsQuery = () => useSliceQuery(
-    'souls', 
-    ['souls']
-)
+export const useAllSoulsQuery = () => useQuery({
+    queryKey: ['souls'],
+    queryFn: async () => {
+        const response = await fetch(`${backendUrl}/souls`)
+        if (!response.ok) {
+            throw new Error('Failed to fetch souls')
+        }
+        return response.json() as Promise<Soul[]>
+    }
+})
 
 export default { useAllSoulsQuery }
