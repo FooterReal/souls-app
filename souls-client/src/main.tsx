@@ -28,8 +28,8 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
   <StrictMode>
-    <RouterProvider router={router} />
     <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
       <App />
       <TanStackDevtools
         plugins={[
@@ -43,6 +43,6 @@ if (!rootElement.innerHTML) {
           },
         ]}
       />
-    </QueryClientProvider>   
+    </QueryClientProvider>
   </StrictMode>)
 }
