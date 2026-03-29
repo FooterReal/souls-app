@@ -1,9 +1,4 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { CharacterList } from '../components/CharacterList'
 
-export const Route = createFileRoute('/')({ component: App })
-
-function App() {
-  return (
-    <></>
-  )
-}
+export const Route = createFileRoute('/')({ component: CharacterList })
