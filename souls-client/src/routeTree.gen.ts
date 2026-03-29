@@ -9,9 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as MfdRouteImport } from './routes/mfd'
 import { Route as CharacterListRouteImport } from './routes/character-list'
 import { Route as IndexRouteImport } from './routes/index'
 
+const MfdRoute = MfdRouteImport.update({
+  id: '/mfd',
+  path: '/mfd',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CharacterListRoute = CharacterListRouteImport.update({
   id: '/character-list',
   path: '/character-list',
@@ -26,31 +32,42 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/character-list': typeof CharacterListRoute
+  '/mfd': typeof MfdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/character-list': typeof CharacterListRoute
+  '/mfd': typeof MfdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/character-list': typeof CharacterListRoute
+  '/mfd': typeof MfdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/character-list'
+  fullPaths: '/' | '/character-list' | '/mfd'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/character-list'
-  id: '__root__' | '/' | '/character-list'
+  to: '/' | '/character-list' | '/mfd'
+  id: '__root__' | '/' | '/character-list' | '/mfd'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CharacterListRoute: typeof CharacterListRoute
+  MfdRoute: typeof MfdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/mfd': {
+      id: '/mfd'
+      path: '/mfd'
+      fullPath: '/mfd'
+      preLoaderRoute: typeof MfdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/character-list': {
       id: '/character-list'
       path: '/character-list'
@@ -71,6 +88,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CharacterListRoute: CharacterListRoute,
+  MfdRoute: MfdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -16,6 +16,7 @@ function RouteComponent() {
 
   const { isPending, isError, data, error } = client.queries.useAllSoulsQuery()
   const createSoulMutation = client.mutations.useCreateSoulMutation(queryClient)
+  const deleteSoulMutation = client.mutations.useDeleteSoulMutation(queryClient)
 
   return (
     <section className="space-y-6">
@@ -39,9 +40,14 @@ function RouteComponent() {
 
       <ErrorHandle isPending={isPending} isError={isError} data={data} error={error}>
         {(souls: Soul[]) => (
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-4">
             {souls.map((soul: Soul) => (
-              <SoulCard key={soul.id} {...soul} />
+              <SoulCard
+                key={soul.id}
+                {...soul}
+                onDelete={(id) => deleteSoulMutation.mutate(id)}
+                isDeleting={deleteSoulMutation.isPending}
+              />
             ))}
           </div>
         )}

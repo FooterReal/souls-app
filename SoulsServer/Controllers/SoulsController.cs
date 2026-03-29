@@ -49,6 +49,21 @@ public class SoulsController : ControllerBase
         return soul.Id;
     }
 
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteSoul(int id)
+    {
+        var soul = await _context.Souls.FindAsync(id);
+        if (soul == null)
+        {
+            return NotFound();
+        }
+
+        _context.Souls.Remove(soul);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
     /*
     // GET: api/Souls/5
     [HttpGet("{id}")]

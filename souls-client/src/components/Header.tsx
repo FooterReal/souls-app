@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { Flame, Users } from 'lucide-react'
+import { Database, Flame, Users } from 'lucide-react'
 
 export function Header() {
     return (
@@ -34,6 +34,20 @@ export function Header() {
                     >
                         <Users className="h-4 w-4" />
                         Character List
+                    </Link>
+                    <Link 
+                        to="/mfd"
+                        activeOptions={{ exact: true }}
+                        activeProps={{
+                            className:
+                                'inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-cyan-400/15 px-4 py-2 text-sm font-semibold text-cyan-100 shadow-[0_0_28px_rgba(34,211,238,0.15)]',
+                        }}
+                        inactiveProps={{
+                            className:
+                                'inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-zinc-300 transition hover:border-white/20 hover:bg-white/8 hover:text-white',
+                        }}>
+                        <Database className="h-4 w-4" />
+                        MFD
                     </Link>
                 </nav>
             </div>

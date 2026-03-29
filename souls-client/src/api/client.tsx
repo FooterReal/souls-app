@@ -1,4 +1,4 @@
-import { useCreateSoulMutation } from "./mutations/soulsMutations"
+import { useCreateSoulMutation, useDeleteSoulMutation } from "./mutations/soulsMutations"
 import { useAllSoulsQuery } from "./queries/soulsQueries"
 
 type ApiClient = {
@@ -11,7 +11,7 @@ const client: ApiClient = {
         useAllSoulsQuery
     },
     mutations: {
-        useCreateSoulMutation
+        useCreateSoulMutation, useDeleteSoulMutation
     }
 }
 

@@ -9,8 +9,6 @@ type Props = {
 }
 
 export function SoulCard({ id, name, level, onDelete, isDeleting = false }: Props) {
-    const canDelete = onDelete !== undefined && !isDeleting
-
     return (
         <article className="group relative overflow-hidden rounded-3xl border border-white/10 bg-zinc-950/75 p-5 backdrop-blur-xl transition hover:border-amber-300/20 hover:bg-white/6">
             <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-300/50 to-transparent" />
@@ -38,11 +36,10 @@ export function SoulCard({ id, name, level, onDelete, isDeleting = false }: Prop
                 <button
                     type="button"
                     onClick={() => onDelete?.(id)}
-                    disabled={!canDelete}
+                    disabled={isDeleting}
                     className="inline-flex shrink-0 items-center gap-2 rounded-full border border-red-400/20 bg-red-500/10 px-4 py-2 text-sm font-semibold text-red-100 transition hover:border-red-300/35 hover:bg-red-500/15 disabled:cursor-not-allowed disabled:border-white/10 disabled:bg-white/5 disabled:text-zinc-500"
                 >
                     <Trash2 className="h-4 w-4" />
-                    {isDeleting ? 'Deleting...' : ''}
                 </button>
             </div>
         </article>
