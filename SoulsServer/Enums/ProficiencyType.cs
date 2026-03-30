@@ -7,4 +7,5 @@ public enum ProficiencyType
     Skill,
     Save,
     Language,
+    None
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SoulsServer.Database;
-using SoulsServer.Dtos;
+using SoulsServer.Dtos.Souls;
 using SoulsServer.Models;
 
 [Route("api/[controller]")]

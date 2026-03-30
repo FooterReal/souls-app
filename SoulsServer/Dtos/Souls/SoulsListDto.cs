@@ -1,4 +1,4 @@
-namespace SoulsServer.Dtos;
+namespace SoulsServer.Dtos.Souls;
 
 public class SoulsListDto
 {
