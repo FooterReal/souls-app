@@ -44,7 +44,7 @@ function RouteComponent() {
             {souls.map((soul: Soul) => (
               <SoulCard
                 key={soul.id}
-                {...soul}
+                soul={soul}
                 onDelete={(id) => deleteSoulMutation.mutate(id)}
                 isDeleting={deleteSoulMutation.isPending}
               />
