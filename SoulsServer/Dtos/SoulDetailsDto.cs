@@ -1,25 +1,12 @@
-namespace SoulsServer.Models;
+namespace SoulsServer.Dtos;
 
-using System.ComponentModel.DataAnnotations;
-using SoulsServer.Enums;
+using SoulsServer.Models;
 
-public class Soul
+public class SoulDetailsDto
 {
     public int Id { get; set; }
-
-    [Required]
-    [MaxLength(255)]
     public string Name { get; set; } = string.Empty;
-
-    [Required]
-    [Range(1, 20)]
     public int Level { get; set; }
-
-    [Required]
-    public Alignment Alignment { get; set; } = Alignment.None;
-
-    [Required]
-    [Url]
     public string ImageLink { get; set; } = string.Empty;
 
     public SoulType? SoulType { get; set; } = null!;

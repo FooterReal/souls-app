@@ -29,7 +29,8 @@ public class SoulsController : ControllerBase
             {
                 Id = s.Id,
                 Name = s.Name,
-                Level = s.Level
+                Level = s.Level,
+                ImageLink = s.ImageLink
             })
             .ToListAsync();
     }
@@ -64,10 +65,8 @@ public class SoulsController : ControllerBase
         return NoContent();
     }
 
-    /*
-    // GET: api/Souls/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Soul>> GetSoul(int id)
+    public async Task<ActionResult<SoulDetailsDto>> GetSoulDetails(int id)
     {
         var soul = await _context.Souls.FindAsync(id);
 
@@ -76,8 +75,16 @@ public class SoulsController : ControllerBase
             return NotFound();
         }
 
-        return soul;
+        return new SoulDetailsDto
+        {
+            Id = soul.Id,
+            Name = soul.Name,
+            Level = soul.Level,
+            ImageLink = soul.ImageLink
+        };
     }
+
+    /*
 
     // PUT: api/Souls/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -119,22 +126,6 @@ public class SoulsController : ControllerBase
         await _context.SaveChangesAsync();
 
         return CreatedAtAction("GetSoul", new { id = soul.Id }, soul);
-    }
-
-    // DELETE: api/Souls/5
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteSoul(int id)
-    {
-        var soul = await _context.Souls.FindAsync(id);
-        if (soul == null)
-        {
-            return NotFound();
-        }
-
-        _context.Souls.Remove(soul);
-        await _context.SaveChangesAsync();
-
-        return NoContent();
     }
 
     private bool SoulExists(int id)
