@@ -36,7 +36,7 @@ public class SkillsController : ControllerBase
         };
     }
 
-    [HttpPut]
+    [HttpPost]
     public async Task<ActionResult<int>> CreateSkill()
     {
         var skill = new Skill
@@ -50,6 +50,26 @@ public class SkillsController : ControllerBase
 
         return skill.Id;
     }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateSkill(int id, SkillDto skillDto)
+    {
+        var skill = await _context.Skills.FindAsync(id);
+        
+        if (skill == null)
+        {
+            return NotFound();
+        }
+
+        skill.Name = skillDto.Name;
+        skill.ConnectedStat = skillDto.ConnectedStat;
+
+        _context.Skills.Update(skill);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteSkill(int id)

@@ -12,6 +12,7 @@ function RouteComponent() {
 
   const { isPending, isError, data, error } = requests.queries.skillsQueries.allSkillsQuery()
   const addMutation = requests.mutations.skillsMutations.newSkillMutation(requests.client)
+  const updateMutation = requests.mutations.skillsMutations.updateSkillMutation(requests.client)
   const removeMutation = requests.mutations.skillsMutations.removeSkillMutation(requests.client)
 
   return (
@@ -22,6 +23,7 @@ function RouteComponent() {
           data={data.skills}
           fieldTypes={data.fieldTypes}
           addMutation={addMutation}
+          updateMutation={updateMutation}
           removeMutation={removeMutation}
         />
       }

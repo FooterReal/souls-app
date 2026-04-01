@@ -2,26 +2,21 @@ import type { UseMutationResult } from "@tanstack/react-query";
 import { useState } from "react";
 import { MFDDetailsPanel } from "./MFDDetailsPanel";
 import { MFDButton } from "./MFDButton";
-import { getFrom } from "#/common/getter";
+import { getFrom } from "#/common/getset";
 
 type Props = {
     data: object[],
     fieldTypes: object,
     addMutation: UseMutationResult<any, Error, void, unknown>,
+    updateMutation: UseMutationResult<any, Error, Record<string, any>, unknown>,
     removeMutation: UseMutationResult<any, Error, number, unknown>
 }
 
-export function MFDTable({ data, fieldTypes, addMutation, removeMutation }: Props) {
+export function MFDTable({ data, fieldTypes, addMutation, updateMutation, removeMutation }: Props) {
     const keys = Object.keys(fieldTypes);
 
-    console.log("Data",data)
-
-    const [selectedItem, setSelectedItem] = useState<number | null>(null);
+    const [selectedItem, setSelectedItem] = useState<object | null | undefined>(null);
     const [saveNeeded, setSaveNeeded] = useState(false)
-
-    keys.forEach((key) => {
-        console.log(key, getFrom(fieldTypes, key), getFrom(data[0], key))
-    })
 
     return (
         <div className="flex gap-2 w-full">
@@ -30,7 +25,7 @@ export function MFDTable({ data, fieldTypes, addMutation, removeMutation }: Prop
                     <MFDButton label="Add" onClick={() => addMutation.mutate()} />
                     <MFDButton label="Remove" onClick={() => {
                         if (selectedItem !== null) {
-                            removeMutation.mutate(selectedItem)
+                            removeMutation.mutate(getFrom(selectedItem, 'id'))
                             setSelectedItem(null)
                         }
                     }} />
@@ -50,8 +45,16 @@ export function MFDTable({ data, fieldTypes, addMutation, removeMutation }: Prop
                         <tbody>
                             {data.map((item) => (
                                 <tr key={getFrom(item, 'id')} 
-                                    className={`${selectedItem !== getFrom(item, 'id') ? "bg-theme" : "acc-theme border-1"} m-1`}
-                                    onClick={() => {setSelectedItem(getFrom(item, 'id'))}}
+                                    className={`${
+                                        selectedItem === null || selectedItem === undefined ?
+                                            "bg-theme" :
+                                            getFrom(selectedItem, 'id') !== getFrom(item, 'id') ? 
+                                                "bg-theme" : 
+                                                "acc-theme border-1"} m-1`}
+                                    onClick={() => {
+                                        setSelectedItem(item)
+                                        setSaveNeeded(false)
+                                    }}
                                 >
                                     {keys.map((key) => (
                                         <td key={key} className="items-center text-center p-1 text-nowrap">
@@ -64,7 +67,6 @@ export function MFDTable({ data, fieldTypes, addMutation, removeMutation }: Prop
                     </table>
                 </div>         
             </div>
-            
 
             <div className="brd-theme border-1"></div>
 
@@ -72,7 +74,8 @@ export function MFDTable({ data, fieldTypes, addMutation, removeMutation }: Prop
                 <div className="flex flex-1 flex-wrap">
                     {selectedItem === null ? (<></>) : (
                         <MFDDetailsPanel 
-                            item={data.find(item => getFrom(item, 'id') === selectedItem)}
+                            selectedItem={selectedItem}
+                            setSelectedItem={setSelectedItem}
                             fieldTypes={fieldTypes}
                             saveNeeded={saveNeeded}
                             setSaveNeeded={setSaveNeeded}/>
@@ -82,8 +85,9 @@ export function MFDTable({ data, fieldTypes, addMutation, removeMutation }: Prop
                 <div className="flex gap-2 justify-end">
                     <MFDButton label="Cancel" onClick={() => setSelectedItem(null)} />
                     <MFDButton label="Save" isEnabled={saveNeeded} onClick={() => {
-                        if (saveNeeded) {
-
+                        if (saveNeeded && selectedItem !== null && selectedItem !== undefined) {
+                            setSaveNeeded(false)
+                            updateMutation.mutate(selectedItem)
                         }
                     }} />
                 </div>

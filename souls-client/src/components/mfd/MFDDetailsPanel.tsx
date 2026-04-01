@@ -1,6 +1,12 @@
-import { getFrom } from "#/common/getter";
+import { getFrom } from "#/common/getset";
 
-function renderSwitch(type: string, value: any, onChange: (value: any) => void) {
+function renderSwitch(
+    key: string,
+    type: string, 
+    value: any,
+    selectedItem: Record<string, any>,
+    setSelectedItem: (values: Record<string, any>) => void, 
+    onChange: (value: any) => void) {
 
     if (type.includes("|")) { // complex types
         const vars = type.split("|").map(v => v.trim())
@@ -9,8 +15,11 @@ function renderSwitch(type: string, value: any, onChange: (value: any) => void) 
             case "lov":
                 return <select 
                     className="brd-theme bg-theme border-2 rounded-md p-1" 
-                    defaultValue={value}
-                    onChange={(e) => onChange(e.target.value)}>
+                    value={value}
+                    onChange={(e) => {
+                        setSelectedItem({ ...selectedItem, [key]: e.target.value })
+                        onChange(e.target.value)
+                    }}>
                     {vars.slice(1).map((option) => (
                         <option key={option} value={option}>{option}</option>
                     ))}
@@ -30,11 +39,14 @@ function renderSwitch(type: string, value: any, onChange: (value: any) => void) 
             className="brd-theme bg-theme border-2 rounded-md p-1" 
             type={inputType} 
             defaultValue={value}
-            onChange={(e) => onChange(e.target.value)}/>
+            onChange={(e) => {
+                setSelectedItem({ ...selectedItem, [key]: e.target.value })
+                onChange(e.target.value)
+            }}/>
     }
 }
 
-export function MFDDetailsPanel({ item, fieldTypes, saveNeeded, setSaveNeeded }: { item: object | undefined, fieldTypes: object, saveNeeded: boolean, setSaveNeeded: (value: boolean) => void }) {
+export function MFDDetailsPanel({ selectedItem, setSelectedItem, fieldTypes, saveNeeded, setSaveNeeded }: { selectedItem: Record<string, any> | undefined, setSelectedItem: (item: Record<string, any> | null) => void, fieldTypes: object, saveNeeded: boolean, setSaveNeeded: (value: boolean) => void }) {
     const keys = Object.keys(fieldTypes).filter(key => key !== 'id');
 
     const onChange = (_: any) => {
@@ -43,7 +55,7 @@ export function MFDDetailsPanel({ item, fieldTypes, saveNeeded, setSaveNeeded }:
         }
     }
 
-    if (item === undefined) {
+    if (selectedItem === undefined) {
         return <div>No item selected...</div>
     }
 
@@ -54,14 +66,21 @@ export function MFDDetailsPanel({ item, fieldTypes, saveNeeded, setSaveNeeded }:
     return (
         <div className="flex flex-col w-full">
             <div className="brd-theme border-b-2 pt-2 mb-4">
-                <h1 className="text-xl font-bold">{getFrom(item, 'name')}</h1>
+                <h1 className="text-xl font-bold">{getFrom(selectedItem, 'name')}</h1>
             </div>
             <div className="flex flex-wrap gap-4">
                 {keys.map((key) => (
                     <div key={key} className="">
                         <label>{key.toUpperCase()}</label>
                         <br/>
-                        {renderSwitch(getFrom(fieldTypes, key), getFrom(item, key), onChange)}
+                        {renderSwitch(
+                            key,
+                            getFrom(fieldTypes, key),
+                            getFrom(selectedItem, key),
+                            selectedItem,
+                            setSelectedItem,
+                            onChange)
+                        }
                     </div>
                 ))}
             </div>
