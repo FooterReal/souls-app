@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using SoulsServer.Regx;
 
 namespace SoulsServer.Dtos;
 
@@ -19,7 +20,7 @@ public static class Dto
         return typeof(T)
             .GetProperties()
             .ToDictionary(
-                prop => Regex.Replace(prop.Name,"^([A-Z])", m => m.Groups[1].Value.ToLowerInvariant()),
+                prop => DtoRegx.UpperCaseStartRegex().Replace(prop.Name, m => m.Value.ToLowerInvariant()),
                 prop =>
             {
                 if (prop.PropertyType == typeof(string))
