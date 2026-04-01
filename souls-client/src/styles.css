@@ -49,3 +49,7 @@ body {
   border-color: var(--acc-theme);
 }
 
+.scroll-theme {
+  scrollbar-width: thin;
+  scrollbar-color: var(--acc-theme) var(--bg-theme);
+}

@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SoulsRouteImport } from './routes/souls'
 import { Route as MfdRouteImport } from './routes/mfd'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as MfdSkillsRouteImport } from './routes/mfd/skills'
 
 const SoulsRoute = SoulsRouteImport.update({
   id: '/souls',
@@ -28,34 +29,42 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MfdSkillsRoute = MfdSkillsRouteImport.update({
+  id: '/skills',
+  path: '/skills',
+  getParentRoute: () => MfdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/mfd': typeof MfdRoute
+  '/mfd': typeof MfdRouteWithChildren
   '/souls': typeof SoulsRoute
+  '/mfd/skills': typeof MfdSkillsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/mfd': typeof MfdRoute
+  '/mfd': typeof MfdRouteWithChildren
   '/souls': typeof SoulsRoute
+  '/mfd/skills': typeof MfdSkillsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/mfd': typeof MfdRoute
+  '/mfd': typeof MfdRouteWithChildren
   '/souls': typeof SoulsRoute
+  '/mfd/skills': typeof MfdSkillsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/mfd' | '/souls'
+  fullPaths: '/' | '/mfd' | '/souls' | '/mfd/skills'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/mfd' | '/souls'
-  id: '__root__' | '/' | '/mfd' | '/souls'
+  to: '/' | '/mfd' | '/souls' | '/mfd/skills'
+  id: '__root__' | '/' | '/mfd' | '/souls' | '/mfd/skills'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  MfdRoute: typeof MfdRoute
+  MfdRoute: typeof MfdRouteWithChildren
   SoulsRoute: typeof SoulsRoute
 }
 
@@ -82,12 +91,29 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mfd/skills': {
+      id: '/mfd/skills'
+      path: '/skills'
+      fullPath: '/mfd/skills'
+      preLoaderRoute: typeof MfdSkillsRouteImport
+      parentRoute: typeof MfdRoute
+    }
   }
 }
 
+interface MfdRouteChildren {
+  MfdSkillsRoute: typeof MfdSkillsRoute
+}
+
+const MfdRouteChildren: MfdRouteChildren = {
+  MfdSkillsRoute: MfdSkillsRoute,
+}
+
+const MfdRouteWithChildren = MfdRoute._addFileChildren(MfdRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  MfdRoute: MfdRoute,
+  MfdRoute: MfdRouteWithChildren,
   SoulsRoute: SoulsRoute,
 }
 export const routeTree = rootRouteImport
