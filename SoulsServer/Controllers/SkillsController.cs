@@ -21,16 +21,19 @@ public class SkillsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<SkillDto>>> GetSkills()
+    public async Task<ActionResult<SkillsDto>> GetSkills()
     {
-        return await _context.Skills
-            .Select(s => new SkillDto
-            {
-                Id = s.Id,
-                Name = s.Name,
-                ConnectedStat = s.ConnectedStat
-            })
-            .ToListAsync();
+        return new SkillsDto
+        {
+            Skills = await _context.Skills
+                .Select(s => new SkillDto
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    ConnectedStat = s.ConnectedStat
+                })
+                .ToListAsync()
+        };
     }
 
     [HttpPut]

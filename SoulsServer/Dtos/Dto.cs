@@ -1,6 +1,6 @@
 namespace SoulsServer.Dtos;
 
-public class BaseDto
+public static class Dto
 {
     private static readonly List<Type> NumberTypes = [
         typeof(int),
@@ -12,12 +12,13 @@ public class BaseDto
         typeof(byte)
     ];
 
-    public Dictionary<string, string> FieldTypes => GetType()
-        .GetProperties()
-        .Where(prop => !prop.Name.Equals(nameof(FieldTypes)))
-        .ToDictionary(
-            prop => prop.Name.ToLowerInvariant(),
-            prop =>
+    public static Dictionary<string, string> GetFieldTypes<T>() where T : class
+    {
+        return typeof(T)
+            .GetProperties()
+            .ToDictionary(
+                prop => prop.Name.ToLowerInvariant(),
+                prop =>
             {
                 if (prop.PropertyType == typeof(string))
                 {
@@ -41,4 +42,5 @@ public class BaseDto
                 }
             }
         );
+    }
 }
