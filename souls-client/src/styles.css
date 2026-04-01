@@ -10,6 +10,7 @@
   --sec-theme: #B0B0B0;
   --brd-theme: #444444;
   --acc-theme: #888888;
+  --rev-theme: #222222;
   --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
 }
 
@@ -45,8 +46,16 @@ body {
 }
 
 .acc-theme {
-  color: var(--acc-theme);
   border-color: var(--acc-theme);
+}
+
+.txt-acc-theme {
+  color: var(--acc-theme);
+}
+
+.rev-theme {
+  border-color: var(--rev-theme);
+  color: var(--acc-theme);
 }
 
 .scroll-theme {

@@ -32,6 +32,7 @@ public class SkillsController : ControllerBase
                     Name = s.Name,
                     ConnectedStat = s.ConnectedStat
                 })
+                .OrderBy(s => s.Name)
                 .ToListAsync()
         };
     }
@@ -55,7 +56,7 @@ public class SkillsController : ControllerBase
     public async Task<IActionResult> UpdateSkill(int id, SkillDto skillDto)
     {
         var skill = await _context.Skills.FindAsync(id);
-        
+
         if (skill == null)
         {
             return NotFound();

@@ -38,7 +38,7 @@ function renderSwitch(
         return <input 
             className="brd-theme bg-theme border-2 rounded-md p-1" 
             type={inputType} 
-            defaultValue={value}
+            value={value}
             onChange={(e) => {
                 setSelectedItem({ ...selectedItem, [key]: e.target.value })
                 onChange(e.target.value)

@@ -13,7 +13,7 @@ type Props = {
 }
 
 export function MFDTable({ data, fieldTypes, addMutation, updateMutation, removeMutation }: Props) {
-    const keys = Object.keys(fieldTypes);
+    const keys = Object.keys(fieldTypes).filter(key => key !== 'id');
 
     const [selectedItem, setSelectedItem] = useState<object | null | undefined>(null);
     const [saveNeeded, setSaveNeeded] = useState(false)
@@ -50,7 +50,7 @@ export function MFDTable({ data, fieldTypes, addMutation, updateMutation, remove
                                             "bg-theme" :
                                             getFrom(selectedItem, 'id') !== getFrom(item, 'id') ? 
                                                 "bg-theme" : 
-                                                "acc-theme border-1"} m-1`}
+                                                "acc-theme txt-acc-theme border-1"} m-1`}
                                     onClick={() => {
                                         setSelectedItem(item)
                                         setSaveNeeded(false)
@@ -83,7 +83,10 @@ export function MFDTable({ data, fieldTypes, addMutation, updateMutation, remove
                 </div>
 
                 <div className="flex gap-2 justify-end">
-                    <MFDButton label="Cancel" onClick={() => setSelectedItem(null)} />
+                    <MFDButton label="Cancel" onClick={() => {
+                        setSelectedItem(null)
+                        setSaveNeeded(false)
+                    }} />
                     <MFDButton label="Save" isEnabled={saveNeeded} onClick={() => {
                         if (saveNeeded && selectedItem !== null && selectedItem !== undefined) {
                             setSaveNeeded(false)
