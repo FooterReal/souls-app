@@ -12,5 +12,5 @@ public class Skill
     public string Name { get; set; } = string.Empty;
 
     [Required]
-    public Stat ConnectedStat { get; set; }
+    public Stat ConnectedStat { get; set; } = Stat.Strength;
 }
